@@ -6,14 +6,20 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivity$PlaceholderFragment">
 
+    <TextView android:id="@+id/section_label" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:id="@+id/linearLayout1"
         android:paddingEnd="25dp"
+        android:paddingRight="25dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/linearLayout4">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -56,9 +62,11 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_toEndOf="@+id/linearLayout1"
+        android:layout_toRightOf="@+id/linearLayout1"
         android:id="@+id/linearLayout2"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/linearLayout4">
 
         <View
             android:layout_width="1dp"
@@ -71,11 +79,15 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_toEndOf="@+id/linearLayout2"
+        android:layout_toRightOf="@+id/linearLayout2"
         android:id="@+id/linearLayout3"
         android:gravity="center"
         android:paddingStart="25dp"
+        android:paddingLeft="25dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/linearLayout4">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -239,7 +251,47 @@
 
     </LinearLayout>
 
-    <TextView android:id="@+id/section_label" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/linearLayout4"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:layout_weight="0">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:id="@+id/brk_progress_bar"
+                android:layout_gravity="start"
+                android:layout_weight="1" />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="450dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/main_progress_bar"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:id="@+id/pwr_progress_bar"
+                android:layout_gravity="end"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
