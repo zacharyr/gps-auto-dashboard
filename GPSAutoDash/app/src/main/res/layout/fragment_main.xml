@@ -247,6 +247,7 @@
                 android:text="@string/acceleration_unit"
                 android:id="@+id/acceleration_unit"
                 android:padding="10dp" />
+
         </LinearLayout>
 
     </LinearLayout>

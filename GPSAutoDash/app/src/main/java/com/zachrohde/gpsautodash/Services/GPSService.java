@@ -16,34 +16,32 @@ import java.math.BigDecimal;
 
 // TODO (URGENT): fix textview lookups
 
-public class GPSService {
+/**
+ * Using the GPS, GPSService updates all the views on the UI that display GPS data. GPSService
+ * runs on the main thread as it operates on an interrupt.
+ */
+public class GPSService implements LocationListener {
     // Member fields.
     private Activity mActivity;
     private View mRootView;
+
+    // TextViews for the UI.
+    private TextView mSpeedView;
+    private TextView mLatView;
+    private TextView mLongView;
+    private TextView mAltView;
+    private TextView mDistView;
 
     // For distance calculations.
     private boolean mOldMeasurements = false;
     private double mOldLatitude = 0.0;
     private double mOldLongitude = 0.0;
-
-    // For distance calculations.
     private double mDistanceTraveled = 0.0;
 
-    /**
-     * Using the GPS, GPSService updates all the views on the UI that display GPS data. GPSService
-     * runs on the main thread as it operates on an interrupt.
-     */
     public GPSService(Activity activity, View rootView) {
         mActivity = activity;
         mRootView = rootView;
 
-        setupGPS();
-    }
-
-    /**
-     * Setup the GPS's location change listener.
-     */
-    private void setupGPS() {
         // Acquire a reference to the system Location Manager.
         LocationManager locationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
 
@@ -53,38 +51,60 @@ public class GPSService {
             mActivity.finish();
         }
 
-        // Define a listener that responds to location updates.
-        LocationListener locationListener = new LocationListener() {
-            /**
-             * Called when a new location is found by the location provider.
-             */
-            public void onLocationChanged(Location location) {
-                updateSpeed(location);
-                updateLatLongAlt(location);
-                updateDistance(location);
-                // updateAcceleration(location);
-            }
+        // Instantiate the TextViews.
+        mSpeedView = (TextView) mRootView.findViewById(R.id.speed_value);
+        mLatView = (TextView) mRootView.findViewById(R.id.latitude_value);
+        mLongView = (TextView) mRootView.findViewById(R.id.longitude_value);
+        mAltView = (TextView) mRootView.findViewById(R.id.altitude_value);
+        mDistView = (TextView) mRootView.findViewById(R.id.distance_value);
 
-            /**
-             * Called when the provider status changes.
-             */
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
+        startListener(locationManager);
+    }
 
-            /**
-             * Called when the provider is enabled by the user.
-             */
-            public void onProviderEnabled(String provider) {}
+    /**
+     * Called when a new location is found by the location provider.
+     */
+    @Override
+    public void onLocationChanged(Location location) {
+        updateSpeed(location);
+        updateLatLongAlt(location);
+        updateDistance(location);
+    }
 
-            /**
-             * Called when the provider is disabled by the user.
-             */
-            public void onProviderDisabled(String provider) {}
-        };
+    /**
+     * Called when the provider status changes.
+     */
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
 
+    /**
+     * Called when the provider is enabled by the user.
+     */
+    @Override
+    public void onProviderEnabled(String provider) {}
+
+    /**
+     * Called when the provider is disabled by the user.
+     */
+    @Override
+    public void onProviderDisabled(String provider) {}
+
+    /**
+     * Start the LocationListener.
+     */
+    private void startListener(LocationManager locationManager) {
         // Register the listener with the GPS Provider Location Manager to receive GPS updates.
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 0, 0, this);
         // Register the listener with the Network Provider Location Manager to receive network updates.
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER , 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER , 0, 0, this);
+    }
+
+    /**
+     * Stop the LocationListener.
+     */
+    private void stopListener(LocationManager locationManager) {
+        if (locationManager != null)
+            locationManager.removeUpdates(this);
     }
 
     /**
@@ -95,8 +115,7 @@ public class GPSService {
         if (location.hasSpeed()) {
             float speed = location.getSpeed();
 
-            TextView speed_view = (TextView) mRootView.findViewById(R.id.speed_value);
-            speed_view.setText(Integer.toString((int) (speed * 2.23694)));
+            mSpeedView.setText(Integer.toString((int) (speed * 2.23694)));
         }
     }
 
@@ -107,21 +126,18 @@ public class GPSService {
         // Set the latitude.
         double latitude = location.getLatitude();
 
-        TextView lat_view = (TextView) mRootView.findViewById(R.id.latitude_value);
-        lat_view.setText(Double.toString(latitude));
+        mLatView.setText(Double.toString(latitude));
 
         // Set the longitude.
         double longitude = location.getLongitude();
 
-        TextView long_view = (TextView) mRootView.findViewById(R.id.longitude_value);
-        long_view.setText(Double.toString(longitude));
+        mLongView.setText(Double.toString(longitude));
 
         // Set the altitude.
         if (location.hasAltitude()) {
             double altitude = location.getAltitude();
 
-            TextView alt_view = (TextView) mRootView.findViewById(R.id.altitude_value);
-            alt_view.setText(Integer.toString((int) (altitude * 3.28084)));
+            mAltView.setText(Integer.toString((int) (altitude * 3.28084)));
         }
     }
 
@@ -147,12 +163,7 @@ public class GPSService {
 
                 mDistanceTraveled += distance[0];  // Update the running total of distance traveled.
 
-                // Round to the hundredth decimal place.
-                BigDecimal bd = new BigDecimal(Double.toString(mDistanceTraveled * 3.28084));
-                bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-
-                TextView dist_view = (TextView) mRootView.findViewById(R.id.distance_value);
-                dist_view.setText(Double.toString(bd.doubleValue()));
+                mDistView.setText(Integer.toString((int) (mDistanceTraveled * 0.000621371)));
 
                 // Store the new measurements.
                 mOldLatitude = latitude;
