@@ -32,11 +32,11 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // Create a new GPSService instance.
-        new GPSService(getActivity(), rootView);
-
         // Create a new AccelService instance.
-        new AccelService(getActivity(), rootView);
+        AccelService accelServiceInst = new AccelService(getActivity(), rootView);
+
+        // Create a new GPSService instance.
+        new GPSService(getActivity(), rootView, accelServiceInst);
 
         return rootView;
     }

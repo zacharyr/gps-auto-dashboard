@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 import com.zachrohde.gpsautodash.R;
 
-import java.math.BigDecimal;
-
 // TODO (URGENT): fix textview lookups
 
 /**
@@ -24,6 +22,7 @@ public class GPSService implements LocationListener {
     // Member fields.
     private Activity mActivity;
     private View mRootView;
+    private AccelService mAccelServiceInst;
 
     // TextViews for the UI.
     private TextView mSpeedView;
@@ -34,13 +33,14 @@ public class GPSService implements LocationListener {
 
     // For distance calculations.
     private boolean mOldMeasurements = false;
-    private double mOldLatitude = 0.0;
-    private double mOldLongitude = 0.0;
+    private double mOldLatitude;
+    private double mOldLongitude;
     private double mDistanceTraveled = 0.0;
 
-    public GPSService(Activity activity, View rootView) {
+    public GPSService(Activity activity, View rootView, AccelService accelServiceInst) {
         mActivity = activity;
         mRootView = rootView;
+        mAccelServiceInst = accelServiceInst;
 
         // Acquire a reference to the system Location Manager.
         LocationManager locationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
@@ -69,6 +69,7 @@ public class GPSService implements LocationListener {
         updateSpeed(location);
         updateLatLongAlt(location);
         updateDistance(location);
+        mAccelServiceInst.updateAcceleration(location);
     }
 
     /**

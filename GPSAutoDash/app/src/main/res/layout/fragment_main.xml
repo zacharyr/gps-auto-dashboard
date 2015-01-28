@@ -23,7 +23,7 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="210dp"
+            android:layout_width="160dp"
             android:layout_height="fill_parent"
             android:id="@+id/linearLayout"
             android:clickable="false"
@@ -36,7 +36,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/speed_value"
                 android:id="@+id/speed_value"
-                android:textSize="100sp"
+                android:textSize="70sp"
                 android:textColor="#025bcf"
                 android:layout_gravity="center" />
         </LinearLayout>
@@ -66,7 +66,8 @@
         android:id="@+id/linearLayout2"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/linearLayout4">
+        android:layout_above="@+id/linearLayout4"
+        android:layout_marginBottom="15dp">
 
         <View
             android:layout_width="1dp"
@@ -261,37 +262,12 @@
         android:id="@+id/linearLayout4"
         android:layout_alignParentBottom="true">
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:gravity="center"
-            android:layout_weight="0">
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:id="@+id/brk_progress_bar"
-                android:layout_gravity="start"
-                android:layout_weight="1" />
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="450dp"
-                android:layout_height="fill_parent"
-                android:id="@+id/main_progress_bar"
-                android:layout_gravity="center"
-                android:layout_weight="1" />
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:id="@+id/pwr_progress_bar"
-                android:layout_gravity="end"
-                android:layout_weight="1" />
-        </LinearLayout>
+            android:id="@+id/acceleration_bar"
+            android:progressDrawable="@drawable/pwr_progress" />
 
     </LinearLayout>
 
