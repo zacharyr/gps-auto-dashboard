@@ -36,6 +36,7 @@
                 android:textSize="70sp"
                 android:textColor="#025bcf"
                 android:layout_gravity="center" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -50,6 +51,7 @@
                 android:text="@string/speed_unit"
                 android:id="@+id/speed_units"
                 android:layout_gravity="center_vertical" />
+
         </LinearLayout>
 
     </LinearLayout>
@@ -67,9 +69,11 @@
         android:layout_marginBottom="15dp">
 
         <View
+            android:id="@+id/centerBar"
             android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:background="@android:color/black" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -102,6 +106,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/latitude_title"
                 android:id="@+id/latitude_title"
+                android:paddingEnd="10dp"
                 android:paddingRight="10dp" />
 
             <TextView
@@ -119,7 +124,9 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/latitude_unit"
                 android:id="@+id/latitude_unit"
+                android:paddingStart="10dp"
                 android:paddingLeft="10dp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -137,6 +144,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/longitude_title"
                 android:id="@+id/longitude_title"
+                android:paddingEnd="10dp"
                 android:paddingRight="10dp" />
 
             <TextView
@@ -154,7 +162,9 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/longitude_unit"
                 android:id="@+id/longitude_unit"
+                android:paddingStart="10dp"
                 android:paddingLeft="10dp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -172,6 +182,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/altitude_title"
                 android:id="@+id/altitude_title"
+                android:paddingEnd="10dp"
                 android:paddingRight="10dp" />
 
             <TextView
@@ -189,7 +200,9 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/altitude_unit"
                 android:id="@+id/altitude_unit"
+                android:paddingStart="10dp"
                 android:paddingLeft="10dp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -207,6 +220,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/distance_title"
                 android:id="@+id/distance_title"
+                android:paddingEnd="10dp"
                 android:paddingRight="10dp" />
 
             <TextView
@@ -224,7 +238,9 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/distance_unit"
                 android:id="@+id/distance_unit"
+                android:paddingStart="10dp"
                 android:paddingLeft="10dp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -242,6 +258,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/acceleration_title"
                 android:id="@+id/acceleration_title"
+                android:paddingEnd="10dp"
                 android:paddingRight="10dp" />
 
             <TextView
@@ -259,6 +276,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/acceleration_unit"
                 android:id="@+id/acceleration_unit"
+                android:paddingStart="10dp"
                 android:paddingLeft="10dp" />
 
         </LinearLayout>
@@ -279,6 +297,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/acceleration_bar"
+            android:background="@drawable/black_bg_progress"
             android:progressDrawable="@drawable/main_progress" />
 
     </LinearLayout>

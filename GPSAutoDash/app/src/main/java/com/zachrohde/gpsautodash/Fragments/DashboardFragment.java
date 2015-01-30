@@ -2,6 +2,10 @@ package com.zachrohde.gpsautodash.Fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.shapes.Shape;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +42,12 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        // See if we need to change the objects on the screen to the dark theme's colors.
+        if (MainActivity.mThemeId == android.R.style.Theme_Holo) {
+            rootView.findViewById(R.id.centerBar).setBackgroundColor(Color.WHITE);
+            rootView.findViewById(R.id.acceleration_bar).setBackgroundDrawable(getResources().getDrawable(R.drawable.white_bg_progress));
+        }
 
         // Create a new AccelService instance.
         mAccelServiceInst = new AccelService(getActivity(), rootView);

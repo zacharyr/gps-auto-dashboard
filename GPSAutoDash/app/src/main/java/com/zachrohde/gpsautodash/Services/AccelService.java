@@ -3,12 +3,14 @@ package com.zachrohde.gpsautodash.Services;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.location.Location;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.zachrohde.gpsautodash.MainActivity;
 import com.zachrohde.gpsautodash.R;
 
 import java.math.BigDecimal;
@@ -83,15 +85,27 @@ public class AccelService {
                     if (accelPercentage <= 75) {
                         animateProgress(accelPercentage);
                         mAccelBar.setProgressDrawable(mAccelBarRes.getDrawable(R.drawable.main_progress));
+
+                        // If the theme is dark, set the theme of the accelerator bar to white.
+                        if (MainActivity.mThemeId == android.R.style.Theme_Holo)
+                            mRootView.findViewById(R.id.acceleration_bar).setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.white_bg_progress));
                     } else {
                         animateProgress(accelPercentage);
                         mAccelBar.setProgressDrawable(mAccelBarRes.getDrawable(R.drawable.pwr_progress));
+
+                        // If the theme is dark, set the theme of the accelerator bar to white.
+                        if (MainActivity.mThemeId == android.R.style.Theme_Holo)
+                            mRootView.findViewById(R.id.acceleration_bar).setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.white_bg_progress));
                     }
                 } else if (acceleration < 0) {
                     int accelPercentage = (int) findPercentage(0, NEG_END, acceleration);
 
                     animateProgress(accelPercentage);
                     mAccelBar.setProgressDrawable(mAccelBarRes.getDrawable(R.drawable.brk_progress));
+
+                    // If the theme is dark, set the theme of the accelerator bar to white.
+                    if (MainActivity.mThemeId == android.R.style.Theme_Holo)
+                        mRootView.findViewById(R.id.acceleration_bar).setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.white_bg_progress));
                 } else {
                     animateProgress(0);
                 }

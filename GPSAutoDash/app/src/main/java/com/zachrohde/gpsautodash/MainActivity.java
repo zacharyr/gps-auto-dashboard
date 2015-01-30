@@ -3,11 +3,13 @@ package com.zachrohde.gpsautodash;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.zachrohde.gpsautodash.Fragments.AboutFragment;
