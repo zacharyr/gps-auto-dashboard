@@ -1,5 +1,4 @@
-package com.zachrohde.gpsautodash;
-
+package com.zachrohde.gpsautodash.Fragments;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -20,7 +19,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.zachrohde.gpsautodash.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -104,7 +104,6 @@ public class NavigationDrawerFragment extends Fragment {
                 new String[]{
                         getString(R.string.title_section_dashboard),
                         getString(R.string.title_section_settings),
-                        getString(R.string.title_section_about),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
@@ -244,11 +243,6 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
             return true;
         }
 

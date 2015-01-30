@@ -4,29 +4,49 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
+import com.zachrohde.gpsautodash.Fragments.AboutFragment;
+import com.zachrohde.gpsautodash.Fragments.DashboardFragment;
+import com.zachrohde.gpsautodash.Fragments.NavigationDrawerFragment;
+import com.zachrohde.gpsautodash.Fragments.SettingsFragment;
+import com.zachrohde.gpsautodash.Services.LightService;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+    private static final String TAG = "MainActivity";
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
+    // Used to set the theme on restart.
+    public static int mThemeId = -1;
+
+    // Fragment managing the behaviors, interactions and presentation of the navigation drawer.
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
+    // Used to store the last screen title. For use in {@link #restoreActionBar()}.
     private CharSequence mTitle;
+
+    // Store the service instance.
+    private LightService lightServiceInst;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (mThemeId != -1) this.setTheme(mThemeId); // If app was destroyed, but mThemeId has a value on restore.
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        // Check to see if there is a request for a new theme.
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getInt("theme", -1) != -1) {
+                mThemeId = savedInstanceState.getInt("theme");
+                this.setTheme(mThemeId);
+            }
+            //mTitlesHidden = savedInstanceState.getBoolean("titlesHidden");
+        }
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Keep the screen on.
 
         setContentView(R.layout.activity_main);
 
@@ -38,17 +58,59 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        // Load the default preferences.
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        // Create a new instance of LightService to enable auto-theme-switching based on light.
+        lightServiceInst = new LightService(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // When the activity is destroyed, save the current theme.
+        outState.putInt("theme", mThemeId);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        lightServiceInst.startListener();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        lightServiceInst.stopListener();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        lightServiceInst.stopListener();
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        FragmentManager fragmentManager = getFragmentManager();
+
         switch (position) {
             case 0:
-                // update the main content by replacing fragments
-                FragmentManager fragmentManager = getFragmentManager();
+                // Update the main content by setting the Dashboard fragment.
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, DashboardFragment.newInstance(position + 1))
                         .commit();
+                break;
+            case 1:
+                // Update the main content by setting the Prefs fragment.
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, SettingsFragment.newInstance(position + 1))
+                        .commit();
+                break;
         }
     }
 
@@ -60,9 +122,6 @@ public class MainActivity extends Activity
             case 2:
                 mTitle = getString(R.string.title_section_settings);
                 break;
-            case 3:
-                mTitle = getString(R.string.title_section_about);
-                break;
         }
     }
 
@@ -72,7 +131,6 @@ public class MainActivity extends Activity
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,6 +152,15 @@ public class MainActivity extends Activity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        return super.onOptionsItemSelected(item);
+        switch (id) {
+            case R.id.option_about:
+                // Show the About dialog.
+                AboutFragment fragment = new AboutFragment();
+                fragment.show(getFragmentManager(), "");
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

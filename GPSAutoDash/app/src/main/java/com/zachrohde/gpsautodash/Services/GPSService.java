@@ -2,27 +2,34 @@ package com.zachrohde.gpsautodash.Services;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zachrohde.gpsautodash.Fragments.SettingsFragment;
 import com.zachrohde.gpsautodash.R;
-
-// TODO (URGENT): fix textview lookups
 
 /**
  * Using the GPS, GPSService updates all the views on the UI that display GPS data. GPSService
  * runs on the main thread as it operates on an interrupt.
  */
 public class GPSService implements LocationListener {
+    private static final String TAG = "GPSService";
+
     // Member fields.
     private Activity mActivity;
     private View mRootView;
     private AccelService mAccelServiceInst;
+
+    // LocationManager for listener management.
+    private final LocationManager mLocationManager;
 
     // TextViews for the UI.
     private TextView mSpeedView;
@@ -43,10 +50,10 @@ public class GPSService implements LocationListener {
         mAccelServiceInst = accelServiceInst;
 
         // Acquire a reference to the system Location Manager.
-        LocationManager locationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
 
         // Check to see if the GPS is enabled.
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Toast.makeText(mActivity, R.string.gps_disabled, Toast.LENGTH_LONG).show();
             mActivity.finish();
         }
@@ -58,7 +65,8 @@ public class GPSService implements LocationListener {
         mAltView = (TextView) mRootView.findViewById(R.id.altitude_value);
         mDistView = (TextView) mRootView.findViewById(R.id.distance_value);
 
-        startListener(locationManager);
+        // Initiate the listener.
+        startListener();
     }
 
     /**
@@ -93,19 +101,22 @@ public class GPSService implements LocationListener {
     /**
      * Start the LocationListener.
      */
-    private void startListener(LocationManager locationManager) {
+    public void startListener() {
         // Register the listener with the GPS Provider Location Manager to receive GPS updates.
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 0, 0, this);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 0, 0, this);
         // Register the listener with the Network Provider Location Manager to receive network updates.
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER , 0, 0, this);
+        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER , 0, 0, this);
     }
 
     /**
      * Stop the LocationListener.
      */
-    private void stopListener(LocationManager locationManager) {
-        if (locationManager != null)
-            locationManager.removeUpdates(this);
+    public void stopListener() {
+        try {
+            mLocationManager.removeUpdates(this);
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, mActivity.getString(R.string.stop_location_manager));
+        }
     }
 
     /**
@@ -149,9 +160,11 @@ public class GPSService implements LocationListener {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
+        float min_accuracy = Float.parseFloat(prefs.getString(SettingsFragment.PREF_KEY_DIST_ACC_MIN, mActivity.getString(R.string.pref_value_dist_acc_min)));
+
         // We only want to calculate the distance when we have high accuracy.
-        // TODO: let the user change this number
-        if (location.hasAccuracy() && location.getAccuracy() < 15.0) {
+        if (location.hasAccuracy() && location.getAccuracy() < min_accuracy) {
             // Only calculate the distance when we have obtained at least one set of measurements.
             if (!mOldMeasurements) {
                 mOldLatitude = latitude;

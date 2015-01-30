@@ -11,10 +11,11 @@ import android.widget.TextView;
 
 import com.zachrohde.gpsautodash.R;
 
-import java.util.Random;
+import java.math.BigDecimal;
 
 /**
- *
+ * Using the GPS data, every time the GPS has a new location object, determine the acceleration and
+ * update the acceleration widget.
  */
 public class AccelService {
     // Member fields.
@@ -48,7 +49,7 @@ public class AccelService {
     }
 
     /**
-     *
+     * Callback function for GPSService to send the new location data.
      */
     public void updateAcceleration(Location location) {
         // We can only proceed when the location object actually has a speed to report.
@@ -61,17 +62,15 @@ public class AccelService {
             } else {
                 float velocity = location.getSpeed();
 
-                Random rand = new Random();
-                velocity = (float) ((rand.nextInt((80 - 70) + 1) + 70) / 2.23694);
-
                 long currentTime = System.currentTimeMillis();
 
+                // Calculate the acceleration with the updated velocity and time.
                 float acceleration = calculateAcceleration(velocity, currentTime);
 
                 // Round to the hundredth decimal place.
-                //BigDecimal accelRounded = new BigDecimal(acceleration);
-                //accelRounded = accelRounded.setScale(2, BigDecimal.ROUND_HALF_UP);
-                //acceleration = accelRounded.floatValue();
+                BigDecimal accelRounded = new BigDecimal(acceleration);
+                accelRounded = accelRounded.setScale(2, BigDecimal.ROUND_HALF_UP);
+                acceleration = accelRounded.floatValue();
 
                 //mAccelView.setText(accelRounded.toString());
                 mAccelView.setText(Float.toString(acceleration));
@@ -80,25 +79,21 @@ public class AccelService {
                 if (acceleration > 0) {
                     int accelPercentage = (int) findPercentage(0, POS_END, acceleration);
 
+                    // Switch whether the primary accel. theme is shown or power mode.
                     if (accelPercentage <= 75) {
                         animateProgress(accelPercentage);
                         mAccelBar.setProgressDrawable(mAccelBarRes.getDrawable(R.drawable.main_progress));
-                        System.out.println("positive, normal accel!: " + accelPercentage);
                     } else {
                         animateProgress(accelPercentage);
                         mAccelBar.setProgressDrawable(mAccelBarRes.getDrawable(R.drawable.pwr_progress));
-                        System.out.println("positive, hard accel!: " + accelPercentage);
                     }
                 } else if (acceleration < 0) {
                     int accelPercentage = (int) findPercentage(0, NEG_END, acceleration);
 
                     animateProgress(accelPercentage);
                     mAccelBar.setProgressDrawable(mAccelBarRes.getDrawable(R.drawable.brk_progress));
-                    System.out.println("negative, applying brake!: " + accelPercentage);
                 } else {
                     animateProgress(0);
-                    mAccelBar.setProgressDrawable(mAccelBarRes.getDrawable(R.drawable.main_progress));
-                    System.out.println("zero!: " + 0);
                 }
 
                 mOldVelocity = velocity;
@@ -108,7 +103,7 @@ public class AccelService {
     }
 
     /**
-     *
+     * Calculate the acceleration using the velocity and time elapsed.
      */
     private float calculateAcceleration(float velocity, long currentTime) {
         float deltaVelocity = velocity - mOldVelocity;  // meters/second
@@ -117,7 +112,7 @@ public class AccelService {
     }
 
     /**
-     *
+     * Map the acceleration value to the corresponding percentage.
      */
     private static double findPercentage(double start, double end, double val) {
         double range = end - start;
@@ -127,7 +122,7 @@ public class AccelService {
     }
 
     /**
-     *
+     * Animate the progress bar.
      */
     private void animateProgress(int progress) {
         // Update the "progress" propriety of progress bar until it reaches progress.

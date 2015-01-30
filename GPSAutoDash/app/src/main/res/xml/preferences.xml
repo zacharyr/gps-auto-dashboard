@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_title_gps_settings"
+        android:key="pref_key_gps_settings">
+
+        <EditTextPreference
+            android:key="pref_key_dist_acc_min"
+            android:title="@string/pref_title_dist_acc_min"
+            android:summary="@string/pref_summary_dist_acc_min"
+            android:defaultValue="@string/pref_value_dist_acc_min"
+            android:inputType="numberDecimal" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
