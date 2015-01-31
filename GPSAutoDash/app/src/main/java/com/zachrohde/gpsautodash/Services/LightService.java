@@ -2,15 +2,12 @@ package com.zachrohde.gpsautodash.Services;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.preference.PreferenceManager;
 
 import com.zachrohde.gpsautodash.MainActivity;
-import com.zachrohde.gpsautodash.R;
 
 /**
  * TODO
@@ -35,8 +32,6 @@ public class LightService implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        //if (themeSwitchStatus) themeSwitchStatus = false;
-
         if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
             // Get the ambient light level in SI lux units.
             float light_level = event.values[0];
@@ -46,14 +41,12 @@ public class LightService implements SensorEventListener {
                 // Activate night mode.
                 if (MainActivity.mThemeId != android.R.style.Theme_Holo) {
                     MainActivity.mThemeId = android.R.style.Theme_Holo;
-                    setDistanceTraveled();
                     mActivity.recreate(); // We have acquired a new theme, destroy the activity.
                 }
             } else {
                 // Activate day mode.
                 if (MainActivity.mThemeId != android.R.style.Theme_Holo_Light_DarkActionBar) {
                     MainActivity.mThemeId = android.R.style.Theme_Holo_Light_DarkActionBar;
-                    setDistanceTraveled();
                     mActivity.recreate(); // We have acquired a new theme, destroy the activity.
                 }
             }
@@ -75,13 +68,5 @@ public class LightService implements SensorEventListener {
      */
     public void stopListener() {
         mSensorManager.unregisterListener(this);
-    }
-
-    /**
-     * TODO
-     */
-    private void setDistanceTraveled() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
-        prefs.edit().putLong(mActivity.getString(R.string.pref_key_distance), Double.doubleToRawLongBits(GPSService.mDistanceTraveled)).apply();
     }
 }

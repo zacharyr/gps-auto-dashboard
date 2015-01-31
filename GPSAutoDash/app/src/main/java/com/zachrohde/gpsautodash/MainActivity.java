@@ -6,7 +6,6 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -15,6 +14,7 @@ import com.zachrohde.gpsautodash.Fragments.AboutFragment;
 import com.zachrohde.gpsautodash.Fragments.DashboardFragment;
 import com.zachrohde.gpsautodash.Fragments.NavigationDrawerFragment;
 import com.zachrohde.gpsautodash.Fragments.SettingsFragment;
+import com.zachrohde.gpsautodash.Services.GPSService;
 import com.zachrohde.gpsautodash.Services.LightService;
 
 public class MainActivity extends Activity
@@ -35,14 +35,15 @@ public class MainActivity extends Activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (mThemeId != -1) this.setTheme(mThemeId); // If app was destroyed, but mThemeId has a value on restore.
+        if (mThemeId != -1) setTheme(mThemeId); // If app was stopped, but mThemeId has a value on restore.
         super.onCreate(savedInstanceState);
 
-        // Check to see if there is a saved theme.
+        // Check to see if there is a saved theme; we cannot use onRestoreInstanceState because
+        // onCreate is called first.
         if (savedInstanceState != null) {
             if (savedInstanceState.getInt("theme", -1) != -1) {
                 mThemeId = savedInstanceState.getInt("theme");
-                this.setTheme(mThemeId);
+                setTheme(mThemeId);
             }
         }
 
@@ -69,10 +70,19 @@ public class MainActivity extends Activity
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.e(TAG, "onSaveInstanceState");
 
-        // When the activity is destroyed, save the current theme and distance traveled.
+        // When the activity is ended, save the current theme and distance traveled.
         outState.putInt("theme", mThemeId);
+        outState.putDouble("distance", GPSService.mDistanceTraveled);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState.getDouble("distance", 0) != 0) {
+            GPSService.mDistanceTraveled = savedInstanceState.getDouble("distance");
+        }
     }
 
     @Override
@@ -92,9 +102,15 @@ public class MainActivity extends Activity
     @Override
     public void onStop() {
         super.onStop();
-        Log.e(TAG, "onStop");
 
         lightServiceInst.stopListener();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        GPSService.mDistanceTraveled = 0;
     }
 
     @Override

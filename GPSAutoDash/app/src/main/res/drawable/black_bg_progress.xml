@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item android:id="@android:id/background">
         <shape>
+            <padding
+                android:top="1.5dp"
+                android:left="1.5dp"
+                android:right="1.5dp"
+                android:bottom="1.5dp" />
             <solid
                 android:color="@android:color/transparent" />
             <stroke
@@ -11,4 +17,5 @@
                 android:radius="4dp" />
         </shape>
     </item>
+
 </selector>

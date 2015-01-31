@@ -58,7 +58,7 @@ public class DashboardFragment extends Fragment {
         mAccelServiceInst = new AccelService(getActivity(), rootView);
 
         // Create a new GPSService instance.
-        mGPSServiceInst = new GPSService(getActivity(), rootView, savedInstanceState, mAccelServiceInst);
+        mGPSServiceInst = new GPSService(getActivity(), rootView, mAccelServiceInst);
 
         return rootView;
     }

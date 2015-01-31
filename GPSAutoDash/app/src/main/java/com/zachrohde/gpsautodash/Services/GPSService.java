@@ -29,9 +29,6 @@ public class GPSService implements LocationListener {
     private View mRootView;
     private AccelService mAccelServiceInst;
 
-    // Preference manager.
-    SharedPreferences mPrefs;
-
     // LocationManager for listener management.
     private final LocationManager mLocationManager;
 
@@ -48,17 +45,10 @@ public class GPSService implements LocationListener {
     private double mOldLongitude;
     public static double mDistanceTraveled = 0;
 
-    public GPSService(Activity activity, View rootView, Bundle savedInstanceState, AccelService accelServiceInst) {
+    public GPSService(Activity activity, View rootView, AccelService accelServiceInst) {
         mActivity = activity;
         mRootView = rootView;
         mAccelServiceInst = accelServiceInst;
-
-        // Check to see if there is a saved distance.
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
-        if (savedInstanceState != null) {
-            mDistanceTraveled = Double.longBitsToDouble(mPrefs.getLong(mActivity.getString(R.string.pref_key_distance), Double.doubleToLongBits(0)));
-            mPrefs.edit().putLong(mActivity.getString(R.string.pref_key_distance), Double.doubleToRawLongBits(0)).apply();
-        }
 
         // Acquire a reference to the system Location Manager.
         mLocationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
@@ -173,13 +163,11 @@ public class GPSService implements LocationListener {
      * Update the lat/long/alt with the new location data and calculated lat, long, and alt.
      */
     private void updateDistance(Location location) {
-        mDistanceTraveled += 50000;
-        mDistView.setText(Integer.toString((int) (mDistanceTraveled * 0.000621371)));
-
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
 
-        float min_accuracy = Float.parseFloat(mPrefs.getString(SettingsFragment.PREF_KEY_DIST_ACC_MIN, mActivity.getString(R.string.pref_value_dist_acc_min)));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
+        float min_accuracy = Float.parseFloat(prefs.getString(SettingsFragment.PREF_KEY_DIST_ACC_MIN, mActivity.getString(R.string.pref_value_dist_acc_min)));
 
         // We only want to calculate the distance when we have high accuracy.
         if (location.hasAccuracy() && location.getAccuracy() < min_accuracy) {

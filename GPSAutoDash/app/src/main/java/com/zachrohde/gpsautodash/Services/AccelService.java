@@ -23,9 +23,6 @@ public class AccelService {
     private Activity mActivity;
     private View mRootView;
 
-    // SDK version.
-    int sdk = android.os.Build.VERSION.SDK_INT;
-
     // Progress bar.
     private ProgressBar mAccelBar;
     private Resources mAccelBarRes;

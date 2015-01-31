@@ -20,23 +20,23 @@
     <string name="speed_value">---</string>
     <string name="speed_unit">MPH</string>
 
-    <string name="latitude_title">Latitude</string>
+    <string name="latitude_title">Latitude:</string>
     <string name="latitude_value">---</string>
     <string name="latitude_unit">°</string>
 
-    <string name="longitude_title">Longitude</string>
+    <string name="longitude_title">Longitude:</string>
     <string name="longitude_value">---</string>
     <string name="longitude_unit">°</string>
 
-    <string name="altitude_title">Altitude</string>
+    <string name="altitude_title">Altitude:</string>
     <string name="altitude_value">---</string>
     <string name="altitude_unit">ft</string>
 
-    <string name="distance_title">Distance</string>
+    <string name="distance_title">Distance:</string>
     <string name="distance_value">---</string>
     <string name="distance_unit">mi</string>
 
-    <string name="acceleration_title">Acceleration</string>
+    <string name="acceleration_title">Acceleration:</string>
     <string name="acceleration_value">---</string>
     <string name="acceleration_unit">m/s&#178;</string>
 
