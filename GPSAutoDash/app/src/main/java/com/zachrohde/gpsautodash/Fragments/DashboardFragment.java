@@ -3,9 +3,6 @@ package com.zachrohde.gpsautodash.Fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.shapes.Shape;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +17,8 @@ import com.zachrohde.gpsautodash.Services.GPSService;
  * TODO
  */
 public class DashboardFragment extends Fragment {
+    private static final String TAG = "DashboardFragment";
+
     // The fragment argument representing the section number for this fragment.
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -46,14 +45,20 @@ public class DashboardFragment extends Fragment {
         // See if we need to change the objects on the screen to the dark theme's colors.
         if (MainActivity.mThemeId == android.R.style.Theme_Holo) {
             rootView.findViewById(R.id.centerBar).setBackgroundColor(Color.WHITE);
-            rootView.findViewById(R.id.acceleration_bar).setBackgroundDrawable(getResources().getDrawable(R.drawable.white_bg_progress));
+
+            if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                rootView.findViewById(R.id.acceleration_bar).setBackgroundDrawable(getResources().getDrawable(R.drawable.white_bg_progress));
+            } else {
+                rootView.findViewById(R.id.acceleration_bar).setBackground(getResources().getDrawable(R.drawable.white_bg_progress));
+            }
+
         }
 
         // Create a new AccelService instance.
         mAccelServiceInst = new AccelService(getActivity(), rootView);
 
         // Create a new GPSService instance.
-        mGPSServiceInst = new GPSService(getActivity(), rootView, mAccelServiceInst);
+        mGPSServiceInst = new GPSService(getActivity(), rootView, savedInstanceState, mAccelServiceInst);
 
         return rootView;
     }
@@ -75,6 +80,13 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+
+        mGPSServiceInst.stopListener();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
 
         mGPSServiceInst.stopListener();
     }

@@ -3,13 +3,12 @@ package com.zachrohde.gpsautodash;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 
 import com.zachrohde.gpsautodash.Fragments.AboutFragment;
@@ -39,13 +38,12 @@ public class MainActivity extends Activity
         if (mThemeId != -1) this.setTheme(mThemeId); // If app was destroyed, but mThemeId has a value on restore.
         super.onCreate(savedInstanceState);
 
-        // Check to see if there is a request for a new theme.
+        // Check to see if there is a saved theme.
         if (savedInstanceState != null) {
             if (savedInstanceState.getInt("theme", -1) != -1) {
                 mThemeId = savedInstanceState.getInt("theme");
                 this.setTheme(mThemeId);
             }
-            //mTitlesHidden = savedInstanceState.getBoolean("titlesHidden");
         }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // Keep the screen on.
@@ -71,7 +69,9 @@ public class MainActivity extends Activity
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        // When the activity is destroyed, save the current theme.
+        Log.e(TAG, "onSaveInstanceState");
+
+        // When the activity is destroyed, save the current theme and distance traveled.
         outState.putInt("theme", mThemeId);
     }
 
@@ -90,8 +90,9 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
+        Log.e(TAG, "onStop");
 
         lightServiceInst.stopListener();
     }

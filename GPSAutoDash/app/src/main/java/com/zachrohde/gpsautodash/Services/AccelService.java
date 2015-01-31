@@ -3,7 +3,6 @@ package com.zachrohde.gpsautodash.Services;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.location.Location;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -24,6 +23,9 @@ public class AccelService {
     private Activity mActivity;
     private View mRootView;
 
+    // SDK version.
+    int sdk = android.os.Build.VERSION.SDK_INT;
+
     // Progress bar.
     private ProgressBar mAccelBar;
     private Resources mAccelBarRes;
@@ -37,8 +39,8 @@ public class AccelService {
     private long mOldTime;
 
     // Constants for finding the percentage.
-    private final double POS_END = 2.5;
-    private final double NEG_END = -2.5;
+    private double POS_END = 2.5;
+    private double NEG_END = -2.5;
 
     public AccelService(Activity activity, View rootView) {
         mActivity = activity;
@@ -87,15 +89,13 @@ public class AccelService {
                         mAccelBar.setProgressDrawable(mAccelBarRes.getDrawable(R.drawable.main_progress));
 
                         // If the theme is dark, set the theme of the accelerator bar to white.
-                        if (MainActivity.mThemeId == android.R.style.Theme_Holo)
-                            mRootView.findViewById(R.id.acceleration_bar).setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.white_bg_progress));
+                        if (MainActivity.mThemeId == android.R.style.Theme_Holo) setDarkTheme();
                     } else {
                         animateProgress(accelPercentage);
                         mAccelBar.setProgressDrawable(mAccelBarRes.getDrawable(R.drawable.pwr_progress));
 
                         // If the theme is dark, set the theme of the accelerator bar to white.
-                        if (MainActivity.mThemeId == android.R.style.Theme_Holo)
-                            mRootView.findViewById(R.id.acceleration_bar).setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.white_bg_progress));
+                        if (MainActivity.mThemeId == android.R.style.Theme_Holo) setDarkTheme();
                     }
                 } else if (acceleration < 0) {
                     int accelPercentage = (int) findPercentage(0, NEG_END, acceleration);
@@ -104,8 +104,7 @@ public class AccelService {
                     mAccelBar.setProgressDrawable(mAccelBarRes.getDrawable(R.drawable.brk_progress));
 
                     // If the theme is dark, set the theme of the accelerator bar to white.
-                    if (MainActivity.mThemeId == android.R.style.Theme_Holo)
-                        mRootView.findViewById(R.id.acceleration_bar).setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.white_bg_progress));
+                    if (MainActivity.mThemeId == android.R.style.Theme_Holo) setDarkTheme();
                 } else {
                     animateProgress(0);
                 }
@@ -144,5 +143,16 @@ public class AccelService {
         animation.setDuration(500); // 0.5 second
         animation.setInterpolator(new DecelerateInterpolator());
         animation.start();
+    }
+
+    /**
+     * Change the theme of the acceleration bar to the dark theme.
+     */
+    private void setDarkTheme() {
+        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            mRootView.findViewById(R.id.acceleration_bar).setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.white_bg_progress));
+        } else {
+            mRootView.findViewById(R.id.acceleration_bar).setBackground(mActivity.getResources().getDrawable(R.drawable.white_bg_progress));
+        }
     }
 }

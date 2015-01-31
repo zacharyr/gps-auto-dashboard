@@ -46,6 +46,8 @@
     <string name="pref_summary_dist_acc_min">&#160;meters minimum accuracy to begin recording distance</string>
     <string name="pref_value_dist_acc_min">15</string>
 
+    <string name="pref_key_distance">distance</string>
+
     <!-- Dialogs -->
     <string name="about_dialog">About</string>
     <string name="about_dialog_title">About GPS Automobile Dashboard</string>
@@ -54,6 +56,7 @@
 
     <!-- Errors -->
     <string name="gps_disabled">Please enable GPS before using this application.</string>
-    <string name="stop_location_manager">Failed to stop Location Manager.</string>
+    <string name="log_gps_disabled">GPS was disabled while the app was running, attempting to restart GPS.</string>
+    <string name="log_stop_location_manager">Failed to stop Location Manager.</string>
 
 </resources>
