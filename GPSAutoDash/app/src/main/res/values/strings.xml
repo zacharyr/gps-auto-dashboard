@@ -42,11 +42,20 @@
 
     <!-- Preferences -->
     <string name="pref_title_gps_settings">Global Positioning System (GPS)</string>
+
     <string name="pref_title_dist_acc_min">Minimum accuracy for distance</string>
     <string name="pref_summary_dist_acc_min">&#160;meters minimum accuracy to begin recording distance</string>
     <string name="pref_value_dist_acc_min">15</string>
 
-    <string name="pref_key_distance">distance</string>
+    <string name="pref_title_accel_settings">Acceleration Widget</string>
+
+    <string name="pref_title_max_neg_accel">Largest negative acceleration</string>
+    <string name="pref_summary_max_neg_accel">&#160;m/s&#178; largest negative acceleration for mapping the acceleration widget percentage</string>
+    <string name="pref_value_max_neg_accel">2.5</string>
+
+    <string name="pref_title_max_pos_accel">Largest positive acceleration</string>
+    <string name="pref_summary_max_pos_accel">&#160;m/s&#178; largest positive acceleration for mapping the acceleration widget percentage</string>
+    <string name="pref_value_max_pos_accel">2.5</string>
 
     <!-- Dialogs -->
     <string name="about_dialog">About</string>

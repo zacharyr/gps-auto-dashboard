@@ -14,4 +14,24 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="@string/pref_title_accel_settings"
+        android:key="pref_key_accel_settings">
+
+        <EditTextPreference
+            android:key="pref_key_max_neg_accel"
+            android:title="@string/pref_title_max_neg_accel"
+            android:summary="@string/pref_summary_max_neg_accel"
+            android:defaultValue="@string/pref_value_max_neg_accel"
+            android:inputType="numberDecimal" />
+
+        <EditTextPreference
+            android:key="pref_key_max_pos_accel"
+            android:title="@string/pref_title_max_pos_accel"
+            android:summary="@string/pref_summary_max_pos_accel"
+            android:defaultValue="@string/pref_value_max_pos_accel"
+            android:inputType="numberDecimal" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>
