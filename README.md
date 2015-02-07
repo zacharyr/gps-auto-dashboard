@@ -8,12 +8,16 @@ GPS Auto Dashboard
 <li>This app also features an acceleration bar widget to give you an indication of how fast, or slow, you are either accelerating or braking.</li>
 </ul>
 
+![GPS Auto Dashboard in the light theme.](resources/screen_light.png)
+
+![GPS Auto Dashboard in the dark theme.](resources/screen_dark.png)
+
 <h2>Running the App</h2>
 
 Those who wish to run the app without building may follow these set of steps:
 
 <ul>
-<li>Download the APK in the repository (the file is gps-auto-dashboard.apk).</li>
+<li>Download the APK in the repository: [GPSAutoDash.apk](gps-auto-dashboard.apk).</li>
 <li>Transfer the APK file to your device (preferably the Downloads folder).</li>
 <li>Install the APK on your device by clicking on it in the folder in which you transferred it to.</li>
 </ul>
