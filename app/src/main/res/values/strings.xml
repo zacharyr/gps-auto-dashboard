@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General -->
-    <string name="app_name">GPSAutoDash</string>
+    <string name="app_name">GPS Auto Dashboard</string>
 
     <!-- Shared/common -->
     <string name="close">Close</string>
@@ -59,8 +59,8 @@
 
     <!-- Dialogs -->
     <string name="about_dialog">About</string>
-    <string name="about_dialog_title">About GPS Automobile Dashboard</string>
-    <string name="about_dialog_message">GPS Automobile Dashboard 1.0\n\nCreated by: Zach Rohde\n\nFor more information visit my website!</string>
+    <string name="about_dialog_title">About GPS Auto Dashboard</string>
+    <string name="about_dialog_message">GPS Auto Dashboard 1.0\n\nCreated by: Zach Rohde\n\nFor more information visit my website!</string>
     <string name="about_website">Visit ZachRohde.com</string>
 
     <!-- Errors -->
