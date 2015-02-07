@@ -1,4 +1,4 @@
-GPS Auto Dashboard
+![GPS Auto Dashboard icon](resources/icon.png)    GPS Auto Dashboard
 ====================
 
 <ul>
@@ -7,6 +7,7 @@ GPS Auto Dashboard
 <li>This app features an automatic day-and-night theme switching algorithm. Which means as you are driving the app will automatically switch to either the light or dark theme, depending on the light conditions.</li>
 <li>This app also features an acceleration bar widget to give you an indication of how fast, or slow, you are either accelerating or braking.</li>
 </ul>
+
 
 ![GPS Auto Dashboard in the light theme.](resources/screen_light.png)
 
