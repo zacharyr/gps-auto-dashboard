@@ -18,7 +18,7 @@
 Those who wish to run the app without building may follow these set of steps:
 
 <ul>
-<li>Download the APK in the repository: [GPSAutoDash.apk](gps-auto-dashboard.apk)</li>
+<li>Download the APK in the repository: <a title="GPSAutoDash.apk" href="https://github.com/zacharyr/gps-auto-dashboard/blob/master/gps-auto-dashboard.apk?raw=true">GPSAutoDash.apk</a></li>
 <li>Transfer the APK file to your device (preferably the Downloads folder).</li>
 <li>Install the APK on your device by clicking on it in the folder in which you transferred it to.</li>
 </ul>
